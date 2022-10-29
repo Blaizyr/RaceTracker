@@ -68,6 +68,19 @@ fun RaceTrackerApp() {
     }
     var raceInProgress by remember { mutableStateOf(false) }
 
+    if (raceInProgress) {
+        LaunchedEffect(
+            key1 = playerOne,
+            key2 = playerTwo
+        ) {
+            coroutineScope {
+                launch { playerOne.run() }
+                launch { playerTwo.run() }
+            }
+            raceInProgress = false // flag that tells if coroutines are canceled.
+        }
+    }
+
     RaceTrackerScreen(
         playerOne = playerOne,
         playerTwo = playerTwo,
